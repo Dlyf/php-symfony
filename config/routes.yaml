@@ -7,7 +7,7 @@ index:
   controller: App\Controller\DefaultController::index
 
 home:
-  path: /
+  path: /home
   controller: App\Controller\DefaultController::home
 
 bravo:
@@ -21,3 +21,15 @@ demo:
 player:
   path: /player/{id}
   controller: App\Controller\DemoController::player
+
+players:
+  path: /players
+  controller: App\Controller\DemoController::players
+
+player_form:
+  path: /playerform
+  controller: App\Controller\DemoController::playerForm
+
+TeamController:
+  path: /team
+  controller: App\Controller\TeamController::team

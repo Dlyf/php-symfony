@@ -10,3 +10,16 @@ Sur la page player afficher les infos manquantes:
 
 Afficher la photo du joueur
 (modifier la source en ajoutant une clé photo à chaque joueur)
+************
+
+Créer une entité Team avec les champs suivants:
+name, coach, foundationYear
+
+Ajouter un controller TeamController
+
+Ajouter une route /teamForm proposant
+un formulaire d'ajout d'une équipe.
+Traiter l'envoi du formulaire
+
+Ajouter une route /teams  qui affichera la liste
+sous forme de tableau, des équipes enregistrés

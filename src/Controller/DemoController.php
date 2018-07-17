@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
 use Symfony\Component\HttpFoundation\Response;
-//use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Player;
 
 class DemoController extends Controller
 {
@@ -33,6 +33,7 @@ class DemoController extends Controller
       'photo' => 'https://o.aolcdn.com/images/dims3/GLOB/crop/3993x2000+7+473/resize/630x315!/format/jpg/quality/85/http%3A%2F%2Fo.aolcdn.com%2Fhss%2Fstorage%2Fmidas%2Fd29c75dee4addd58a632c716ad3dd867%2F206139045%2Fparis-saintgermains-french-forward-kylian-mbappe-celebrates-his-goal-picture-id889341858'
     )
   ];
+
   public function index()
   {
     $colors = ['bleu', 'blanc', 'rouge'];
@@ -68,5 +69,145 @@ class DemoController extends Controller
     return $this->render('player.html.twig', array(
       'player' => $player
     ));
+  }
+
+  public function players()
+  {
+    $p1 = new Player('Abdel M', 10, false, '');
+    // $p1->setName("Abdel M");
+    // $p1->setNum(10);
+    // $p1->setSubstitute(false);
+    $p2 = new Player('Cristiano Ronaldo', 7, false, '');
+    $p3 = new Player('Adil Rami', 17, true, '');
+
+    // $this->addPlayers();
+
+    // récupérer les joueurs en base de données
+    // pour Les requêtes en Lecture, on utilise getRepository()
+    // Le Repository gère toutes les reqêtes en lecture
+    $repo = $this->getDoctrine()->getRepository(Player::class);
+    $players = $repo->findAll(); // SELECT * FROM Player
+
+
+    return $this->render('players.html.twig', array(
+      'title'   => 'Liste de joueurs',
+      'players' => [$p1, $p2, $p3],
+      'players2'=> $players
+    ));
+  }
+
+  private function addPlayers()
+  {
+    $p1 = new Player('Pogba', 6, false, 'https://cdn-media.rtl.fr/cache/cF_cpQchwkEenyULSozZYw/880v587-0/online/image/2016/0613/7783642440_paul-pogba-le-10-juin-2016-sur-la-pelouse-du-stade-de-france.jpg');
+    $p2 = new Player('Lloris', 1, true, 'https://cdn.static01.nicematin.com/media/npo/mobile_1440w/2017/06/sweden-vs-france-21139351.jpg');
+
+    //getManager() fournit un objet gérant les requêtes en écriture
+
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($p1); // requête pendante (en attente d'execution)
+    $em->persist($p2); // requête pendante (en attente d'execution)
+    $em->flush(); //  exécutions des requêtes pendantes
+
+  }
+
+  public function playerForm(Request $request)
+  {
+    // 2 case de figure
+
+
+    // récupérer les valeurs postées
+
+
+    // Cas 1 : POST => traitement de l'envoi du formulaire via le formulaire
+    if ($request->isMethod('post')) {
+      // si la méthode HTTP de la requête est POST
+      // traitement du formulaire
+      // L'objet $request permet d'obtenir des informations
+      // sur le requête
+      // var_dump($request->request);
+      // version objet de: ($_POST)
+      //var_dump($_POST);
+      // var_dump($request->request->get('name'));
+      $name       = $request->request->get('name');
+      $num        = $request->request->get('num');
+      $substitute = $request->request->get('substitute');
+      $photo      = $request->request->get('photo');
+
+      // var_dump($substitute);
+      // renvoie NULL si checkbox non coché, si cochée  : "On"
+
+      // reformatage des données afin qu'elles correspondent
+      // au type attendu par le constructeur de la classe Player
+
+      if ($substitute != NULL) {
+        $substitute = true;
+      } else {
+        $substitute = false;
+      }
+      // enregistrement en DB
+      $player = new Player($name, $num, $substitute, $photo);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($player);
+      $em->flush();
+
+      // redirection vers la route players
+      return $this->redirectToRoute('players');
+    }
+
+    // cas 2 : Get => affichage du formulaire (sans traitement) via l'url
+    return $this->render('playerForm.html.twig', array());
+  }
+
+  }
+
+  //continuer suite
+  public function teamForm(Request $request)
+  {
+    // 2 case de figure
+
+
+    // récupérer les valeurs postées
+
+
+    // Cas 1 : POST => traitement de l'envoi du formulaire via le formulaire
+    if ($request->isMethod('post')) {
+      // si la méthode HTTP de la requête est POST
+      // traitement du formulaire
+      // L'objet $request permet d'obtenir des informations
+      // sur le requête
+      // var_dump($request->request);
+      // version objet de: ($_POST)
+      //var_dump($_POST);
+      // var_dump($request->request->get('name'));
+      $name       = $request->request->get('name');
+      $num        = $request->request->get('num');
+      $substitute = $request->request->get('substitute');
+      $photo      = $request->request->get('photo');
+
+      // var_dump($substitute);
+      // renvoie NULL si checkbox non coché, si cochée  : "On"
+
+      // reformatage des données afin qu'elles correspondent
+      // au type attendu par le constructeur de la classe Player
+
+      if ($substitute != NULL) {
+        $substitute = true;
+      } else {
+        $substitute = false;
+      }
+      // enregistrement en DB
+      $player = new Player($name, $num, $substitute, $photo);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($player);
+      $em->flush();
+
+      // redirection vers la route players
+      return $this->redirectToRoute('players');
+    }
+
+    // cas 2 : Get => affichage du formulaire (sans traitement) via l'url
+    return $this->render('playerForm.html.twig', array());
+  }
+
   }
 }
