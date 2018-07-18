@@ -157,57 +157,5 @@ class DemoController extends Controller
     // cas 2 : Get => affichage du formulaire (sans traitement) via l'url
     return $this->render('playerForm.html.twig', array());
   }
-
-  }
-
-  //continuer suite
-  public function teamForm(Request $request)
-  {
-    // 2 case de figure
-
-
-    // récupérer les valeurs postées
-
-
-    // Cas 1 : POST => traitement de l'envoi du formulaire via le formulaire
-    if ($request->isMethod('post')) {
-      // si la méthode HTTP de la requête est POST
-      // traitement du formulaire
-      // L'objet $request permet d'obtenir des informations
-      // sur le requête
-      // var_dump($request->request);
-      // version objet de: ($_POST)
-      //var_dump($_POST);
-      // var_dump($request->request->get('name'));
-      $name       = $request->request->get('name');
-      $num        = $request->request->get('num');
-      $substitute = $request->request->get('substitute');
-      $photo      = $request->request->get('photo');
-
-      // var_dump($substitute);
-      // renvoie NULL si checkbox non coché, si cochée  : "On"
-
-      // reformatage des données afin qu'elles correspondent
-      // au type attendu par le constructeur de la classe Player
-
-      if ($substitute != NULL) {
-        $substitute = true;
-      } else {
-        $substitute = false;
-      }
-      // enregistrement en DB
-      $player = new Player($name, $num, $substitute, $photo);
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($player);
-      $em->flush();
-
-      // redirection vers la route players
-      return $this->redirectToRoute('players');
-    }
-
-    // cas 2 : Get => affichage du formulaire (sans traitement) via l'url
-    return $this->render('playerForm.html.twig', array());
-  }
-
-  }
+  
 }

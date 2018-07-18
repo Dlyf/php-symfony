@@ -30,6 +30,14 @@ player_form:
   path: /playerform
   controller: App\Controller\DemoController::playerForm
 
-TeamController:
-  path: /team
-  controller: App\Controller\TeamController::team
+team_form:
+  path: /teamform
+  controller: App\Controller\TeamController::teamForm
+
+teams:
+  path: /teams
+  controller: App\Controller\TeamController::teams
+
+team_form_bis:
+  path: /teamformbis
+  controller: App\Controller\TeamController::teamFormBis

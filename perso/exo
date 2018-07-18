@@ -15,7 +15,7 @@ Afficher la photo du joueur
 Créer une entité Team avec les champs suivants:
 name, coach, foundationYear
 
-Ajouter un controller TeamController
+Ajouter un controller TeamController pour gérer les routes liées à l'entité Team
 
 Ajouter une route /teamForm proposant
 un formulaire d'ajout d'une équipe.
